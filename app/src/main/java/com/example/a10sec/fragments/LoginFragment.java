@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,6 +53,7 @@ public class LoginFragment extends BaseFragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("Login", "signInWithEmail:success");
+                                    MainActivity.myPreferences.setLoggedIn(true);
                                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
 
                                 } else {

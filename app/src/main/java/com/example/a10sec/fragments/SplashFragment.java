@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmSplashBinding;
 
@@ -33,7 +34,11 @@ public class SplashFragment extends BaseFragment {
                 @Override
                 public void run() {
                     splashBinding.animLoading.cancelAnimation();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new LoginFragment()).commitAllowingStateLoss();
+                    if (MainActivity.myPreferences.isLoggedIn()){
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
+                    }else{
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new LoginFragment()).commitAllowingStateLoss();
+                    }
                 }
             },splashTimeOut);
 

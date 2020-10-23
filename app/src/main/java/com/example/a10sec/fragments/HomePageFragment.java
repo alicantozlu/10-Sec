@@ -9,8 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmHomepageBinding;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class HomePageFragment  extends BaseFragment{
 
@@ -28,6 +32,18 @@ public class HomePageFragment  extends BaseFragment{
     }
 
     void click() {
-
+        homepageBinding.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.mAuth.signOut();
+                AuthUI.getInstance().signOut(activity).addOnCompleteListener(new OnCompleteListener<Void>(){
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        MainActivity.myPreferences.setLoggedIn(false);
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,new LoginFragment()).commitAllowingStateLoss();
+                    }
+                });
+            }
+        });
     }
 }

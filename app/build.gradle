@@ -30,9 +30,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
 
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     //fb realtime database
     implementation 'com.google.firebase:firebase-database:19.5.0'
@@ -50,5 +52,8 @@ dependencies {
 
     //Lottie Animations
     implementation 'com.airbnb.android:lottie:3.0.7'
+
+    //camera
+    implementation 'com.mindorks:paracamera:0.2.2'
 
 }
