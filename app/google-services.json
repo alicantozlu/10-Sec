@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "930826378085",
+    "firebase_url": "https://sec-eeac6.firebaseio.com",
+    "project_id": "sec-eeac6",
+    "storage_bucket": "sec-eeac6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930826378085:android:edd655c964ce9fe498df8c",
+        "android_client_info": {
+          "package_name": "com.example.a10sec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930826378085-a4sbssfsr5fthv3v0diu9c78gbt8q0uu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1T9ygqWHQwYHsyDx96oENHLIFRMpWVW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930826378085-a4sbssfsr5fthv3v0diu9c78gbt8q0uu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
