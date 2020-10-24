@@ -14,8 +14,7 @@ public class Preferences {
     public void setLoggedIn(Boolean login)  {
         sharedPreferences.edit().putBoolean("login", login).apply();
     }
-    public Boolean isLoggedIn()
-    {
+    public Boolean isLoggedIn() {
         return sharedPreferences.getBoolean("login",false);
     }
 }

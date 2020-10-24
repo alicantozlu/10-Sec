@@ -46,4 +46,5 @@ public class SplashFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
+
 }

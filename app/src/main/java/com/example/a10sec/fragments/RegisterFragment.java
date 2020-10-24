@@ -62,7 +62,7 @@ public class RegisterFragment extends BaseFragment {
                 if (registerBinding.edtTxtPassword.getText().toString().trim().equals(registerBinding.edtTxtRepassword.getText().toString().trim())){
                     registerProcess();
                 }else{
-                    Toast.makeText(activity,"Lütfen şifrenizi kontrol ediniz",Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,"Girilen şifreler aynı değil.",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -87,6 +87,27 @@ public class RegisterFragment extends BaseFragment {
             }
         });
     }
+
+    //kullanıcının email ve passworduyle firebase auth kısmına kaydının yapıldığı yer
+    private void registerProcess(){
+        MainActivity.mAuth.createUserWithEmailAndPassword(registerBinding.edtTxtEmail.getText().toString().trim(), registerBinding.edtTxtPassword.getText().toString().trim())
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Register", "createUserWithEmail:success");
+                            //user = mAuth.getCurrentUser();
+                            MainActivity.myPreferences.setLoggedIn(true);
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
+                        } else {
+                            Log.w("Register", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(activity, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
     //camerayı açtığımız kısım
     private void openCamera(){
         Toast.makeText(activity,"openCamera",Toast.LENGTH_SHORT).show();
@@ -102,6 +123,7 @@ public class RegisterFragment extends BaseFragment {
             }
         }
     }
+
     // galeryi açtığımız kısım
     private  void openGallery(){
         Toast.makeText(activity,"openGallery",Toast.LENGTH_SHORT).show();
@@ -109,6 +131,7 @@ public class RegisterFragment extends BaseFragment {
         intent.setType("image/*");
         startActivityForResult(intent, 237);
     }
+
     //camerayla çekilen fotoyu aldığımız kısım
     public void takePhoto(){
         camera = new Camera.Builder()
@@ -153,6 +176,7 @@ public class RegisterFragment extends BaseFragment {
             }
         }
     }
+
     //Uriyi alıp stringe çevirir
     public String getPath(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
@@ -166,23 +190,5 @@ public class RegisterFragment extends BaseFragment {
     private void uploadImg(){
 
     }
-    //kullanıcının email ve passworduyle firebase auth kısmına kaydının yapıldığı yer
-    private void registerProcess(){
-        MainActivity.mAuth.createUserWithEmailAndPassword(registerBinding.edtTxtEmail.getText().toString().trim(), registerBinding.edtTxtPassword.getText().toString().trim())
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("Register", "createUserWithEmail:success");
-                            //user = mAuth.getCurrentUser();
-                            MainActivity.myPreferences.setLoggedIn(true);
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
-                        } else {
-                            Log.w("Register", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(activity, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        }
 
-                    }
-                });
-    }
 }
