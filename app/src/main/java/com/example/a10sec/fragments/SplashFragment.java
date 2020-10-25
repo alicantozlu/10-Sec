@@ -2,6 +2,7 @@ package com.example.a10sec.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +14,32 @@ import androidx.databinding.DataBindingUtil;
 import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmSplashBinding;
+import com.example.a10sec.models.UserModel;
+import com.example.a10sec.services.ApiClient;
+import com.example.a10sec.services.IApiInterface;
+import com.firebase.ui.auth.data.model.User;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashFragment extends BaseFragment {
-    private static int splashTimeOut=5000;
+    private static int splashTimeOut=3000;
     View view;
     private FragmSplashBinding splashBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         splashBinding = DataBindingUtil.inflate(inflater, R.layout.fragm_splash,container,false);
         view = splashBinding.getRoot();
-        animation();
+
+        getUsers();
         return view;
     }
     void animation(){
@@ -47,4 +61,25 @@ public class SplashFragment extends BaseFragment {
         }
     }
 
+    public void getUsers(){
+        Call<Map<String,UserModel>> call= MainActivity.iApiInterface.getUsers();
+        call.enqueue(new Callback<Map<String,UserModel>>() {
+            @Override
+            public void onResponse(@NotNull Call<Map<String,UserModel>> call, @NotNull Response<Map<String,UserModel>> response) {
+                Map<String,UserModel> usersMap = new HashMap<String, UserModel>();
+                usersMap = response.body();
+                for(Map.Entry<String, UserModel> entry : usersMap.entrySet()) {
+                    String key = entry.getKey();
+                    UserModel value = entry.getValue();
+                    Log.e("Response Key", "Key :" +key);
+                    Log.e("Response User", "User :" +value.getEmail());
+                }
+                animation();
+            }
+            @Override
+            public void onFailure(@NotNull Call<Map<String,UserModel>> call, @NotNull Throwable t) {
+                Log.e("Response onFailure", "onFailure:" + t.toString());
+            }
+        });
+    }
 }
