@@ -243,7 +243,7 @@ public class RegisterFragment extends BaseFragment {
             public void onResponse(@NotNull Call<UserModel> call, @NotNull Response<UserModel> response) {
                 assert response.body() != null;
                 Log.e("Response Succes", "Post Response:" + response.body().getUsername()+response.body().getEmail()+response.body().getUrl()+response.body().getScore());
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
+                activity.changeNonStackPage(new HomePageFragment());
             }
             @Override
             public void onFailure(@NotNull Call<UserModel> call, @NotNull Throwable t) {

@@ -50,9 +50,9 @@ public class SplashFragment extends BaseFragment {
                 public void run() {
                     splashBinding.animLoading.cancelAnimation();
                     if (MainActivity.myPreferences.isLoggedIn()){
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
+                        activity.changeNonStackPage(new HomePageFragment());
                     }else{
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new LoginFragment()).commitAllowingStateLoss();
+                        activity.changeNonStackPage(new LoginFragment());
                     }
                 }
             },splashTimeOut);

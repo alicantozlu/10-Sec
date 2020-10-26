@@ -8,14 +8,92 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HomePage"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_logout"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/logout" />
+
+            <TextView
+                android:id="@+id/txt_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:hint="Logout"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/logout"
+            app:layout_constraintVertical_bias="0.25">
+
+            <ImageView
+                android:id="@+id/img_appicon"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/profileimage" />
+
+            <ImageView
+                android:id="@+id/img_playicon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="32dp"
+                android:padding="25dp"
+                app:layout_constraintEnd_toEndOf="@+id/img_appicon"
+                app:layout_constraintStart_toStartOf="@+id/img_appicon"
+                app:layout_constraintTop_toBottomOf="@+id/img_appicon"
+                app:srcCompat="@drawable/logout" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/img_playicon"
+                app:layout_constraintStart_toStartOf="@+id/img_playicon"
+                app:layout_constraintTop_toBottomOf="@+id/img_playicon">
+
+                <ImageView
+                    android:id="@+id/img_score_board_icon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="12dp"
+                    android:layout_marginRight="16dp"
+                    app:srcCompat="@drawable/logout" />
+
+                <ImageView
+                    android:id="@+id/img_settings_icon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="12dp"
+                    android:layout_marginLeft="16dp"
+                    app:srcCompat="@drawable/logout" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

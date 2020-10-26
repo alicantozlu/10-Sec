@@ -1,6 +1,7 @@
 package com.example.a10sec;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
@@ -23,9 +24,13 @@ public class MainActivity extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         iApiInterface= ApiClient.getClient().create(IApiInterface.class);
 
-        MainActivity.this.getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_frame_layout, new SplashFragment())
-                .commitAllowingStateLoss();
+        changeNonStackPage(new SplashFragment());
+
+    }
+    public void changeStackPage(Fragment fragment){
+        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,fragment).addToBackStack(null).commitAllowingStateLoss();
+    }
+    public void changeNonStackPage(Fragment fragment){
+        MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,fragment).commitAllowingStateLoss();
     }
 }

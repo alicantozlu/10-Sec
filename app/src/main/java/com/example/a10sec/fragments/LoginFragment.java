@@ -40,7 +40,7 @@ public class LoginFragment extends BaseFragment {
         loginBinding.txtRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new RegisterFragment()).addToBackStack(null).commitAllowingStateLoss();
+                activity.changeStackPage(new RegisterFragment());
             }
         });
 
@@ -54,7 +54,7 @@ public class LoginFragment extends BaseFragment {
                                 if (task.isSuccessful()) {
                                     Log.d("Login", "signInWithEmail:success");
                                     MainActivity.myPreferences.setLoggedIn(true);
-                                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
+                                    activity.changeNonStackPage( new HomePageFragment());
 
                                 } else {
                                     Log.w("Login", "signInWithEmail:failure", task.getException());

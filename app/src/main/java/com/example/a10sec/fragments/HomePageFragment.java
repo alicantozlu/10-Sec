@@ -9,17 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmHomepageBinding;
-import com.example.a10sec.models.SingeltonAppData;
-import com.example.a10sec.models.UserModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import java.util.Map;
 
 public class HomePageFragment  extends BaseFragment{
 
@@ -32,37 +29,45 @@ public class HomePageFragment  extends BaseFragment{
 
         homepageBinding = DataBindingUtil.inflate(inflater, R.layout.fragm_homepage,container,false);
         view = homepageBinding.getRoot();
-        users();
         click();
         return view;
     }
 
     void click() {
-        homepageBinding.textView.setOnClickListener(new View.OnClickListener() {
+        homepageBinding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.mAuth.signOut();
-                AuthUI.getInstance().signOut(activity).addOnCompleteListener(new OnCompleteListener<Void>(){
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        MainActivity.myPreferences.setLoggedIn(false);
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,new LoginFragment()).commitAllowingStateLoss();
-                    }
-                });
+                logOut();
+            }
+        });
+        homepageBinding.imgPlayicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.changeStackPage(new GameFragment());
+            }
+        });
+        homepageBinding.imgScoreBoardIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.changeStackPage(new ScoreBoardFragment());
+            }
+        });
+        homepageBinding.imgSettingsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.changeStackPage(new SettingsFragment());
             }
         });
     }
 
-    void users(){
-         for(Map.Entry<String, UserModel> entry : SingeltonAppData.getInstance().getUsersMap().entrySet()) {
-             String key = entry.getKey();
-             UserModel value = entry.getValue();
-             Log.e("Response Key", "Key :" +key);
-             Log.e("Response User", "User :" +value.getEmail());
-             Log.e("Response User", "User :" +value.getUsername());
-             Log.e("Response User", "User :" +value.getUrl());
-             Log.e("Response User", "User :" +value.getScore());
-
-         }
+    private void logOut(){
+        MainActivity.mAuth.signOut();
+        AuthUI.getInstance().signOut(activity).addOnCompleteListener(new OnCompleteListener<Void>(){
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                MainActivity.myPreferences.setLoggedIn(false);
+                activity.changeNonStackPage(new LoginFragment());
+            }
+        });
     }
 }
