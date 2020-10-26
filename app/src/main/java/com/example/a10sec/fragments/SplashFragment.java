@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmSplashBinding;
+import com.example.a10sec.models.SingeltonAppData;
 import com.example.a10sec.models.UserModel;
 import com.example.a10sec.services.ApiClient;
 import com.example.a10sec.services.IApiInterface;
@@ -66,16 +67,14 @@ public class SplashFragment extends BaseFragment {
         call.enqueue(new Callback<Map<String,UserModel>>() {
             @Override
             public void onResponse(@NotNull Call<Map<String,UserModel>> call, @NotNull Response<Map<String,UserModel>> response) {
-                Map<String,UserModel> usersMap = new HashMap<String, UserModel>();
-                usersMap = response.body();
-                for(Map.Entry<String, UserModel> entry : usersMap.entrySet()) {
-                    String key = entry.getKey();
-                    UserModel value = entry.getValue();
-                    Log.e("Response Key", "Key :" +key);
-                    Log.e("Response User", "User :" +value.getEmail());
+                if(response.body()!=null){
+                    Map<String,UserModel> usersMap = new HashMap<String, UserModel>();
+                    usersMap = response.body();
+                    SingeltonAppData.getInstance().setUsersMap(usersMap);
                 }
                 animation();
             }
+
             @Override
             public void onFailure(@NotNull Call<Map<String,UserModel>> call, @NotNull Throwable t) {
                 Log.e("Response onFailure", "onFailure:" + t.toString());

@@ -43,13 +43,8 @@ import com.google.firebase.storage.UploadTask;
 import com.mindorks.paracamera.Camera;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +59,6 @@ public class RegisterFragment extends BaseFragment {
     private int MY_CAMERA_PERMISSION_CODE=100;
     Camera camera;
     private Uri selectedImageUri;
-    JSONObject object;
     //FirebaseUser user;
 
     @Nullable
@@ -225,18 +219,8 @@ public class RegisterFragment extends BaseFragment {
                                 public void onSuccess(final Uri uri) {
                                     Log.d("Firebase Url", "onSuccess: uri= "+ uri.toString());
                                     Toast.makeText(activity,"uploadSucces",Toast.LENGTH_SHORT).show();
-                                    object= new JSONObject();
-                                    try {
-                                        object.put("username",registerBinding.edtTxtUsername.getText().toString());
-                                        object.put("email",registerBinding.edtTxtEmail.getText().toString());
-                                        object.put("url",uri.toString());
-                                        object.put("score",0);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
                                     UserModel user = new UserModel(registerBinding.edtTxtEmail.getText().toString(),0,uri.toString(),registerBinding.edtTxtUsername.getText().toString());
-                                    postUser(MainActivity.mAuth.getUid(),object);
+                                    postUser(MainActivity.mAuth.getUid(),user);
                                 }
                             });
                         }
@@ -252,13 +236,13 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-    //bitmedi daha burası
-    private void postUser(String token , JSONObject object){
-        Call<UserModel> call= MainActivity.iApiInterface.postUser(token,object);
+    private void postUser(String token , UserModel model){
+        Call<UserModel> call= MainActivity.iApiInterface.postUser(token,model);
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(@NotNull Call<UserModel> call, @NotNull Response<UserModel> response) {
-                Log.e("Response Succes", "Post Response:" + response.body());
+                assert response.body() != null;
+                Log.e("Response Succes", "Post Response:" + response.body().getUsername()+response.body().getEmail()+response.body().getUrl()+response.body().getScore());
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, new HomePageFragment()).commitAllowingStateLoss();
             }
             @Override
