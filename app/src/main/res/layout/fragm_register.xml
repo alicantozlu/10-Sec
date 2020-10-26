@@ -8,77 +8,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img_userimg"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/profileimage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edt_txt_email"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Email"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_userimg" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="1dp">
 
-        <EditText
-            android:id="@+id/edt_txt_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/edt_txt_email"
-            app:layout_constraintStart_toStartOf="@+id/edt_txt_email"
-            app:layout_constraintTop_toBottomOf="@+id/edt_txt_email" />
+            <ImageView
+                android:id="@+id/img_userimg"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/profileimage"
+                android:layout_gravity="center" />
 
-        <EditText
-            android:id="@+id/edt_txt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="@+id/edt_txt_username"
-            app:layout_constraintStart_toStartOf="@+id/edt_txt_username"
-            app:layout_constraintTop_toBottomOf="@+id/edt_txt_username" />
+            <EditText
+                android:id="@+id/edt_txt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Email"
+                android:inputType="textPersonName"
+                android:layout_gravity="center"/>
 
-        <EditText
-            android:id="@+id/edt_txt_repassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:hint="RePassword"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="@+id/edt_txt_password"
-            app:layout_constraintStart_toStartOf="@+id/edt_txt_password"
-            app:layout_constraintTop_toBottomOf="@+id/edt_txt_password" />
+            <EditText
+                android:id="@+id/edt_txt_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Register"
-            app:layout_constraintEnd_toEndOf="@+id/edt_txt_repassword"
-            app:layout_constraintStart_toStartOf="@+id/edt_txt_repassword"
-            app:layout_constraintTop_toBottomOf="@+id/edt_txt_repassword" />
+            <EditText
+                android:id="@+id/edt_txt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/edt_txt_repassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:hint="RePassword"
+                android:inputType="textPassword"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Register"
+                android:layout_gravity="center"/>
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

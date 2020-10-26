@@ -34,7 +34,7 @@ public class HomePageFragment  extends BaseFragment{
     }
 
     void click() {
-        homepageBinding.logout.setOnClickListener(new View.OnClickListener() {
+        homepageBinding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logOut();

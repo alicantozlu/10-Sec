@@ -2,6 +2,7 @@ package com.example.a10sec.models;
 
 import com.firebase.ui.auth.data.model.User;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SingeltonAppData {
@@ -31,4 +32,10 @@ public class SingeltonAppData {
     public Map <String,UserModel>getUsersMap(){return usersMap;}
 
     public void setUsersMap(Map<String,UserModel> usersMap){this.usersMap = usersMap;}
+
+    private ArrayList<QuestionModel> questions;
+
+    public  ArrayList<QuestionModel>getQuestions(){return questions;}
+
+    public void setQuestions( ArrayList<QuestionModel> questions){this.questions = questions;}
 }

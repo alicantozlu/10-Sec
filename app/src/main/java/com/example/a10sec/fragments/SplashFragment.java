@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmSplashBinding;
+import com.example.a10sec.models.QuestionModel;
 import com.example.a10sec.models.SingeltonAppData;
 import com.example.a10sec.models.UserModel;
 import com.example.a10sec.services.ApiClient;
@@ -22,7 +23,9 @@ import com.firebase.ui.auth.data.model.User;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -39,7 +42,7 @@ public class SplashFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         splashBinding = DataBindingUtil.inflate(inflater, R.layout.fragm_splash,container,false);
         view = splashBinding.getRoot();
-
+        getQuesitons();
         getUsers();
         return view;
     }
@@ -62,7 +65,7 @@ public class SplashFragment extends BaseFragment {
         }
     }
 
-    public void getUsers(){
+    private void getUsers(){
         Call<Map<String,UserModel>> call= MainActivity.iApiInterface.getUsers();
         call.enqueue(new Callback<Map<String,UserModel>>() {
             @Override
@@ -77,6 +80,24 @@ public class SplashFragment extends BaseFragment {
 
             @Override
             public void onFailure(@NotNull Call<Map<String,UserModel>> call, @NotNull Throwable t) {
+                Log.e("Response onFailure", "onFailure:" + t.toString());
+            }
+        });
+    }
+
+    private void getQuesitons(){
+        Call<ArrayList<QuestionModel>> call= MainActivity.iApiInterface.getQuestions();
+        call.enqueue(new Callback<ArrayList<QuestionModel>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<QuestionModel>> call, @NotNull Response<ArrayList<QuestionModel>> response) {
+                if(response.body()!=null){
+                    ArrayList<QuestionModel> questions = new ArrayList<>();
+                    questions = response.body();
+                    SingeltonAppData.getInstance().setQuestions(questions);
+                }
+            }
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<QuestionModel>> call, @NotNull Throwable t) {
                 Log.e("Response onFailure", "onFailure:" + t.toString());
             }
         });

@@ -8,31 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <ImageView
+            android:id="@+id/btn_logout"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal"
+            android:padding="5dp"
+            android:src="@drawable/ic_exit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/btn_logout"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/logout" />
-
-            <TextView
-                android:id="@+id/txt_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:gravity="center"
-                android:hint="Logout"
-                android:textSize="16sp" />
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -43,57 +29,96 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logout"
+            app:layout_constraintTop_toBottomOf="@+id/btn_logout"
             app:layout_constraintVertical_bias="0.25">
 
             <ImageView
                 android:id="@+id/img_appicon"
                 android:layout_width="170dp"
                 android:layout_height="170dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/profileimage" />
+                app:srcCompat="@drawable/ic_light_bulb" />
 
             <ImageView
                 android:id="@+id/img_playicon"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="32dp"
-                android:padding="25dp"
+                android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/img_appicon"
                 app:layout_constraintStart_toStartOf="@+id/img_appicon"
                 app:layout_constraintTop_toBottomOf="@+id/img_appicon"
-                app:srcCompat="@drawable/logout" />
+                app:srcCompat="@drawable/ic_brain" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txt_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:orientation="horizontal"
+                android:text="Play"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@+id/img_playicon"
                 app:layout_constraintStart_toStartOf="@+id/img_playicon"
-                app:layout_constraintTop_toBottomOf="@+id/img_playicon">
+                app:layout_constraintTop_toBottomOf="@+id/img_playicon" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:rowCount="2"
+                android:columnCount="2"
+                app:layout_constraintEnd_toEndOf="@+id/txt_play"
+                app:layout_constraintStart_toStartOf="@+id/txt_play"
+                app:layout_constraintTop_toBottomOf="@+id/txt_play">
 
                 <ImageView
                     android:id="@+id/img_score_board_icon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:padding="12dp"
-                    android:layout_marginRight="16dp"
-                    app:srcCompat="@drawable/logout" />
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_gravity="center"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    app:srcCompat="@drawable/ic_trophy" />
+
+                <TextView
+                    android:id="@+id/txt_leader_board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:hint="Leader Board"/>
 
                 <ImageView
                     android:id="@+id/img_settings_icon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:padding="12dp"
-                    android:layout_marginLeft="16dp"
-                    app:srcCompat="@drawable/logout" />
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_gravity="center"
+                    android:layout_row="0"
+                    android:layout_column="1"
+                    app:srcCompat="@drawable/ic_bell" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/txt_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:hint="Settings"/>
+
+            </GridLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
