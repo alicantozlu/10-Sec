@@ -21,6 +21,7 @@ import com.example.a10sec.models.UserModel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +90,8 @@ public class SplashFragment extends BaseFragment {
                 if(response.body()!=null){
                     ArrayList<QuestionModel> questions = new ArrayList<>();
                     questions = response.body();
+                    Collections.shuffle(questions);
+                    SingeltonAppData.getInstance().setQuestionCount(0);
                     SingeltonAppData.getInstance().setQuestions(questions);
                 }
             }
