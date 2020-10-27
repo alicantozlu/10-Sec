@@ -17,15 +17,11 @@ import com.example.a10sec.databinding.FragmSplashBinding;
 import com.example.a10sec.models.QuestionModel;
 import com.example.a10sec.models.SingeltonAppData;
 import com.example.a10sec.models.UserModel;
-import com.example.a10sec.services.ApiClient;
-import com.example.a10sec.services.IApiInterface;
-import com.firebase.ui.auth.data.model.User;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
