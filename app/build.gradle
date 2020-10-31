@@ -67,4 +67,7 @@ dependencies {
     //camera
     implementation 'com.mindorks:paracamera:0.2.2'
 
+    //Circle Image View (for profile vb.)
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
 }

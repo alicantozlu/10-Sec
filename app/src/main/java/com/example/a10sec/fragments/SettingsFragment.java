@@ -27,5 +27,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     void click() {
+        // yapılacak olan her ayarı Preferences classında oluşturup burda set ediceksin örngein : MainActivity.myPreferences.setLoggedIn(true);
+        // En başta default değerler ataman gerekiyor yoksa app patlar.
     }
 }

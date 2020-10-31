@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmRegisterBinding;
+import com.example.a10sec.models.SingeltonAppData;
 import com.example.a10sec.models.UserModel;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,8 @@ import com.mindorks.paracamera.Camera;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +83,8 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (registerBinding.edtTxtPassword.getText().toString().trim().equals(registerBinding.edtTxtRepassword.getText().toString().trim())){
+                    setClick(false);
+                    registerBinding.animLoading.setVisibility(View.VISIBLE);
                     registerProcess();
                 }else{
                     Toast.makeText(activity,"Girilen şifreler aynı değil.",Toast.LENGTH_LONG).show();
@@ -106,6 +111,15 @@ public class RegisterFragment extends BaseFragment {
                 alertDialog.show();
             }
         });
+    }
+
+    private void setClick(Boolean bool){
+        registerBinding.edtTxtEmail.setEnabled(bool);
+        registerBinding.edtTxtRepassword.setEnabled(bool);
+        registerBinding.edtTxtPassword.setEnabled(bool);
+        registerBinding.edtTxtUsername.setEnabled(bool);
+        registerBinding.btnRegister.setEnabled(bool);
+        registerBinding.imgUserimg.setEnabled(bool);
     }
 
     //kullanıcının email ve passworduyle firebase auth kısmına kaydının yapıldığı yer
@@ -243,6 +257,13 @@ public class RegisterFragment extends BaseFragment {
             public void onResponse(@NotNull Call<UserModel> call, @NotNull Response<UserModel> response) {
                 assert response.body() != null;
                 Log.e("Response Succes", "Post Response:" + response.body().getUsername()+response.body().getEmail()+response.body().getUrl()+response.body().getScore());
+                Map<String,UserModel> userList = new HashMap<String, UserModel>();
+                userList= SingeltonAppData.getInstance().getUsersMap();
+                userList.put(token,model);
+                SingeltonAppData.getInstance().setUsersMap(userList);
+                setClick(true);
+                registerBinding.animLoading.setVisibility(View.INVISIBLE);
+                registerBinding.animLoading.cancelAnimation();
                 activity.changeNonStackPage(new HomePageFragment());
             }
             @Override

@@ -47,6 +47,8 @@ public class LoginFragment extends BaseFragment {
         loginBinding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setClick(false);
+                loginBinding.animLoading.setVisibility(View.VISIBLE);
                 mAuth.signInWithEmailAndPassword(loginBinding.edtTxtEmail.getText().toString().trim(), loginBinding.edtTxtPassword.getText().toString().trim())
                         .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -54,9 +56,13 @@ public class LoginFragment extends BaseFragment {
                                 if (task.isSuccessful()) {
                                     Log.d("Login", "signInWithEmail:success");
                                     MainActivity.myPreferences.setLoggedIn(true);
+                                    loginBinding.animLoading.cancelAnimation();
                                     activity.changeNonStackPage( new HomePageFragment());
 
                                 } else {
+                                    setClick(true);
+                                    loginBinding.animLoading.setVisibility(View.INVISIBLE);
+                                    loginBinding.animLoading.cancelAnimation();
                                     Log.w("Login", "signInWithEmail:failure", task.getException());
                                     Toast.makeText(activity, "Authentication failed.",Toast.LENGTH_SHORT).show();
                                 }
@@ -64,5 +70,13 @@ public class LoginFragment extends BaseFragment {
                         });
             }
         });
+    }
+
+    private void setClick(Boolean bool){
+        loginBinding.edtTxtEmail.setEnabled(bool);
+        loginBinding.btnLogin.setEnabled(bool);
+        loginBinding.txtRegisterButton.setEnabled(bool);
+        loginBinding.edtTxtPassword.setEnabled(bool);
+
     }
 }

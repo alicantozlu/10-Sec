@@ -18,6 +18,10 @@ public class UserModel {
     @Expose
     private String username;
 
+    public UserModel() {
+
+    }
+
     public UserModel(String email, Integer score, String url, String username) {
         this.email = email;
         this.score = score;
