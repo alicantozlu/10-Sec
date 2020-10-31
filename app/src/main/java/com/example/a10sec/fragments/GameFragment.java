@@ -18,21 +18,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.a10sec.MainActivity;
 import com.example.a10sec.R;
 import com.example.a10sec.databinding.FragmGameBinding;
 import com.example.a10sec.models.SingeltonAppData;
+import com.example.a10sec.models.UserModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GameFragment extends BaseFragment {
     View view;
     private FragmGameBinding gameBinding;
     private String correctAnswer;
+    private int lastScore;
     ArrayList<Integer> uniqueNumberList;
     PorterDuffColorFilter waitFilter,whiteFilter,redFilter,greenFilter;
+    private Handler timeoutHandler,questionTimerHandler;
+    private Runnable removeCallbacks;
     CountDownTimer mCountDownTimer;
-    private int progressCounter,answerTimeOut=1500;;
+    private int progressCounter,questionTimer = 10000,answerTimeOut=2000;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Nullable
@@ -42,12 +53,53 @@ public class GameFragment extends BaseFragment {
         gameBinding = DataBindingUtil.inflate(inflater, R.layout.fragm_game,container,false);
         view = gameBinding.getRoot();
         createColorsFilter();
+        enableTimersBackPress();
+        lastScore = SingeltonAppData.getInstance().getmyUserModel().getScore();
+        gameBinding.txtUsernameScore.setText(SingeltonAppData.getInstance().getmyUserModel().getUsername()+" : "+lastScore);
         getQuestion();
         click();
         return view;
     }
 
+    @Override
+    public void onStop() {
+        try{
+            mCountDownTimer.cancel();
+            questionTimerHandler.removeCallbacks(removeCallbacks);
+        }catch (NullPointerException ignored){
+        }
+        super.onStop();
+    }
+    @Override
+    public void onDestroy() {
+        try{
+            mCountDownTimer.cancel();
+            questionTimerHandler.removeCallbacks(removeCallbacks);
+        }catch (NullPointerException ignored){
+        }
+        super.onDestroy();
+    }
+
+    private void questionTimer(){
+        questionTimerHandler = new Handler();
+        try {
+            questionTimerHandler.postDelayed(removeCallbacks = new Runnable() {
+                @Override
+                public void run() {
+                    lastScore -= 1;
+                    setScore(lastScore);
+                    getQuestion();
+                }
+            },questionTimer);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void getQuestion() {
+        buttonsSetEnable(true);
         resetAnswers();
         final int max = SingeltonAppData.getInstance().getQuestions().size();
         int questionCount = SingeltonAppData.getInstance().getQuestionCount();
@@ -68,66 +120,17 @@ public class GameFragment extends BaseFragment {
         }
     }
 
-    private void questionTimer(){
-        try {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getQuestion();
-                }
-            },10000);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    void click() {
-        gameBinding.txtAnswer1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameBinding.txtAnswer1.getBackground().setColorFilter(waitFilter);
-                buttonsSetEnable(false);
-                checkCorrectAnswer(gameBinding.txtAnswer1.getText().toString().trim(),1);
-            }
-        });
-        gameBinding.txtAnswer2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameBinding.txtAnswer2.getBackground().setColorFilter(waitFilter);
-                buttonsSetEnable(false);
-                checkCorrectAnswer(gameBinding.txtAnswer2.getText().toString().trim(),2);
-            }
-        });
-        gameBinding.txtAnswer3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                gameBinding.txtAnswer3.getBackground().setColorFilter(waitFilter);
-                buttonsSetEnable(false);
-                checkCorrectAnswer(gameBinding.txtAnswer3.getText().toString().trim(),3);
-            }
-        });
-
-        gameBinding.txtAnswer4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameBinding.txtAnswer4.getBackground().setColorFilter(waitFilter);
-                buttonsSetEnable(false);
-                checkCorrectAnswer(gameBinding.txtAnswer4.getText().toString().trim(),4);
-            }
-        });
-    }
-
     private void checkCorrectAnswer(String answer,int buttonNumber){
+        questionTimerHandler.removeCallbacks(removeCallbacks);
         progressBar();
+        timeoutHandler= new Handler();
+        mCountDownTimer.cancel();
         gameBinding.animCount.cancelAnimation();
         gameBinding.animCount.setVisibility(View.INVISIBLE);
         try {
-            new Handler().postDelayed(new Runnable() {
+            timeoutHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    buttonsSetEnable(true);
                     if(buttonNumber==1){
                         gameBinding.txtAnswer1.getBackground().setColorFilter(redFilter);
                     }else if (buttonNumber==2){
@@ -147,9 +150,11 @@ public class GameFragment extends BaseFragment {
                         gameBinding.txtAnswer4.getBackground().setColorFilter(greenFilter);
                     }
                     if (answer.equals(correctAnswer)){
-                        //3 sn beklet, puan arttırıp apite sorgu at, yeni soru cağır
+                        lastScore += 3;
+                        setScore(lastScore);
                     }else{
-
+                        lastScore -= 1;
+                        setScore(lastScore);
                     }
                     nextQuestionTimer();
                 }
@@ -158,6 +163,28 @@ public class GameFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setScore(int score){
+        SingeltonAppData.getInstance().getmyUserModel().setScore(score);
+        gameBinding.txtUsernameScore.setText(SingeltonAppData.getInstance().getmyUserModel().getUsername()+" : "+score);
+        newScorePost(SingeltonAppData.getInstance().getmyUserModel());
+    }
+
+
+    private void newScorePost(UserModel model){
+        Call<UserModel> call= MainActivity.iApiInterface.postUser(MainActivity.mAuth.getUid(),model);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(@NotNull Call<UserModel> call, @NotNull Response<UserModel> response) {
+                assert response.body() != null;
+                Log.e("Response Succes", "Post Response:" + response.body().getUsername()+response.body().getEmail()+response.body().getUrl()+response.body().getScore());
+            }
+            @Override
+            public void onFailure(@NotNull Call<UserModel> call, @NotNull Throwable t) {
+                Log.e("Response onFailure", "onFailure:" + t.toString());
+            }
+        });
     }
 
     private void nextQuestionTimer(){
@@ -188,7 +215,7 @@ public class GameFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 progressCounter++;
-                gameBinding.progressBar.setProgress(100);
+                gameBinding.progressBar.setProgress(0);
             }
         };
         mCountDownTimer.start();
@@ -223,7 +250,7 @@ public class GameFragment extends BaseFragment {
         greenFilter = new PorterDuffColorFilter(Color.parseColor("#ADE498"),PorterDuff.Mode.MULTIPLY);
     }
 
-    void disableCountimeBackPress(){
+    void enableTimersBackPress(){
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener( new View.OnKeyListener()
@@ -231,10 +258,52 @@ public class GameFragment extends BaseFragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    return true;
+                    questionTimerHandler.removeCallbacks(removeCallbacks);
+                    return false;
                 }
                 return false;
             }
         });
     }
+
+    void click() {
+        gameBinding.txtAnswer1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar();
+                gameBinding.txtAnswer1.getBackground().setColorFilter(waitFilter);
+                buttonsSetEnable(false);
+                checkCorrectAnswer(gameBinding.txtAnswer1.getText().toString().trim(),1);
+            }
+        });
+        gameBinding.txtAnswer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar();
+                gameBinding.txtAnswer2.getBackground().setColorFilter(waitFilter);
+                buttonsSetEnable(false);
+                checkCorrectAnswer(gameBinding.txtAnswer2.getText().toString().trim(),2);
+            }
+        });
+        gameBinding.txtAnswer3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar();
+                gameBinding.txtAnswer3.getBackground().setColorFilter(waitFilter);
+                buttonsSetEnable(false);
+                checkCorrectAnswer(gameBinding.txtAnswer3.getText().toString().trim(),3);
+            }
+        });
+
+        gameBinding.txtAnswer4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar();
+                gameBinding.txtAnswer4.getBackground().setColorFilter(waitFilter);
+                buttonsSetEnable(false);
+                checkCorrectAnswer(gameBinding.txtAnswer4.getText().toString().trim(),4);
+            }
+        });
+    }
+
 }

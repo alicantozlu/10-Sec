@@ -37,4 +37,14 @@ public class SingeltonAppData {
     public void setQuestionCount(int questionCount) {
         this.questionCount = questionCount;
     }
+
+    private UserModel myUserModel;
+
+    public UserModel getmyUserModel() {
+        return myUserModel;
+    }
+
+    public void setmyUserModel(UserModel myUserModel) {
+        this.myUserModel = myUserModel;
+    }
 }
